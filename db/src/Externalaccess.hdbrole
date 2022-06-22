@@ -1,0 +1,28 @@
+{
+  "role": {
+    "name": "RN_externalaccess",
+    "object_privileges": [
+      {
+        "name": "LW_DEMO_START_01",
+        "type": "VIEW",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "MEMBER_DIM",
+        "type": "VIEW",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "MEMBER_FACT_01",
+        "type": "VIEW",
+        "privileges": [
+          "SELECT"
+        ]
+      }
+    ]
+  }
+}

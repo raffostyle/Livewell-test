@@ -1,0 +1,92 @@
+{
+  "RAW_MEMBER": {
+    "target": {
+      "object": "RAW_MEMBER",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBER_STEP": {
+    "target": {
+      "object": "RAW_MEMBERACTIVITY_STEPS",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERFORMLEDGER": {
+    "target": {
+      "object": "RAW_MEMBERFORMLEDGER",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERFORMLEDGER_FIELDIDS": {
+    "target": {
+      "object": "RAW_MEMBERFORMLEDGER_FIELDIDS",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERCONTENTLEDGER": {
+    "target": {
+      "object": "RAW_MEMBERCONTENTLEDGER",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERHEALTHEMEA": {
+    "target": {
+      "object": "RAW_MEMBERHEALTHEMEA",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERHEALTHAPAC": {
+    "target": {
+      "object": "RAW_MEMBERHEALTHAPAC",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_REWARDLEDGER": {
+    "target": {
+      "object": "RAW_REWARDLEDGER",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERACTIVITY_SLEEP": {
+    "target": {
+      "object": "RAW_MEMBERACTIVITY_SLEEP",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBER_SLEPP": {
+    "target": {
+      "object": "RAW_MEMBERACTIVITY_SLEEP",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_USERREWARD": {
+    "target": {
+      "object": "RAW_USERREWARD",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_AWS_MEMBERACTIVITY": {
+    "target": {
+      "object": "RAW_AWS_MEMBERACTIVITY",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_CONTENT_OPTIONS": {
+    "target": {
+      "object": "RAW_CONTENT_OPTIONS",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBERCONTENTLEDGER_OPTIONS": {
+    "target": {
+      "object": "RAW_MEMBERCONTENTLEDGER_OPTIONS",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_CRM_CONTRACT": {
+    "target": {
+      "object": "RAW_CRM_CONTRACT",
+      "schema": "DBADMIN"
+    }
+  }
+}

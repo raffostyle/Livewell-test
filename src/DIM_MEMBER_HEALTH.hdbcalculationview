@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_MEMBER_HEALTH" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="FACT_MEMBER_EVENT"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBERHEALTHEMEA">
+    <resourceUri>RAW_MEMBERHEALTHEMEA</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBERHEALTHAPAC">
+    <resourceUri>RAW_MEMBERHEALTHAPAC</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBERHEALTHEMEA$$$$RAW_MEMBERHEALTHEMEA$$">
+    <resourceUri>RAW_MEMBERHEALTHEMEA</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBERHEALTHAPAC$$$$RAW_MEMBERHEALTHAPAC$$">
+    <resourceUri>RAW_MEMBERHEALTHAPAC</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERHEALTHEMEA">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="GENDER"/>
+      <viewAttribute id="DATE"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    
+      <viewAttribute id="BMI"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBERHEALTHEMEA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="BIRTHDATE"/></input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERHEALTHAPAC">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="GENDER"/>
+      <viewAttribute id="DATE"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    
+      <viewAttribute id="BMI"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBERHEALTHAPAC">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="BIRTHDATE"/></input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="U_MEMBER_EVENT">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATE"/>
+      <viewAttribute id="BMI"/>
+      <viewAttribute id="GENDER"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="J_MEMBERHEALTHEMEA" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BMI" source="BMI"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
+    </input>
+    <input node="J_MEMBERHEALTHAPAC" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BMI" source="BMI"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_MEMBERHEALTHEMEA" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATE"/>
+      <viewAttribute id="BMI"/>
+      <viewAttribute id="GENDER"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERHEALTHEMEA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BMI" source="BMI"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_MEMBERHEALTHEMEA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_MEMBERHEALTHAPAC" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATE"/>
+      <viewAttribute id="BMI"/>
+      <viewAttribute id="GENDER"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERHEALTHAPAC">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE" source="DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BMI" source="BMI"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_MEMBERHEALTHAPAC">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERHEALTHEMEA">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBERHEALTHEMEA$$$$RAW_MEMBERHEALTHEMEA$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERHEALTHAPAC">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBERHEALTHAPAC$$$$RAW_MEMBERHEALTHAPAC$$"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="U_MEMBER_EVENT">
+  <attributes>
+    <attribute id="DIM_MEMBER_HEALTH_MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="U_MEMBER_EVENT" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_HEALTH_BIRTH_DATE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="U_MEMBER_EVENT" columnName="DATE"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_HEALTH_BMI" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="U_MEMBER_EVENT" columnName="BMI"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_HEALTH_GENDER" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="U_MEMBER_EVENT" columnName="GENDER"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="785" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_MEMBERHEALTHEMEA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="427" y="516"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_MEMBERHEALTHAPAC" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1125" y="516"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+    <shape expanded="true" modelObjectName="U_MEMBER_EVENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="785" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_MEMBERHEALTHEMEA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="385" y="356"/>
+      <rectangleSize height="30" width="286"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBERHEALTHEMEA" modelObjectNameSpace="J_MEMBERHEALTHEMEA" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="311"/>
+    </shape>
+    <shape modelObjectName="AGG_MEMBERHEALTHEMEA" modelObjectNameSpace="J_MEMBERHEALTHEMEA" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="367" y="30"/>
+      <rectangleSize width="233"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_MEMBERHEALTHAPAC" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="820" y="356"/>
+      <rectangleSize height="30" width="313"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBERHEALTHAPAC" modelObjectNameSpace="J_MEMBERHEALTHAPAC" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="389" y="33"/>
+      <rectangleSize width="232"/>
+    </shape>
+    <shape modelObjectName="AGG_MEMBERHEALTHAPAC" modelObjectNameSpace="J_MEMBERHEALTHAPAC" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="310"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_MEMBERHEALTHEMEA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91" y="516"/>
+      <rectangleSize width="286"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="AGG_MEMBERHEALTHAPAC" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="773" y="516"/>
+      <rectangleSize width="302"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

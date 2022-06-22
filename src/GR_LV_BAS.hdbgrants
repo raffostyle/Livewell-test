@@ -1,0 +1,14 @@
+{
+    "lw_schema": {
+        "object_owner": {
+            "roles": [
+                "bas::external_access_g"
+            ]
+        },
+        "application_user": {
+            "roles": [
+                "bas::external_access"
+            ]
+        }
+    }
+}

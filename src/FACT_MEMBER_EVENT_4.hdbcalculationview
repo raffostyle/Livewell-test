@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="FACT_MEMBER_EVENT_4" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription=""/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBERACTIVITY_SLEEP">
+    <resourceUri>RAW_MEMBERACTIVITY_SLEEP</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBER_STEP">
+    <resourceUri>RAW_MEMBER_STEP</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBERCONTENTLEDGER">
+    <resourceUri>RAW_MEMBERCONTENTLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_REWARDLEDGER">
+    <resourceUri>RAW_REWARDLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_REWARDLEDGER$$$$RAW_REWARDLEDGER$$">
+    <resourceUri>RAW_REWARDLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBERACTIVITY_SLEEP$$$$RAW_MEMBERACTIVITY_SLEEP$$">
+    <resourceUri>RAW_MEMBERACTIVITY_SLEEP</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBERACTIVITY_STEPS$$$$RAW_MEMBER_STEP$$">
+    <resourceUri>RAW_MEMBER_STEP</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBERCONTENTLEDGER_OPTIONS">
+    <resourceUri>RAW_MEMBERCONTENTLEDGER_OPTIONS</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBERCONTENTLEDGER$$$$RAW_MEMBERCONTENTLEDGER$$">
+    <resourceUri>RAW_MEMBERCONTENTLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="CV_MEMBER_FORM_LEDGER_2">
+    <resourceUri>CV_MEMBER_FORM_LEDGER_2</resourceUri>
+  </DataSource>
+  <DataSource id="CV_AWS_MEMBER_ACTIVITY">
+    <resourceUri>CV_AWS_MEMBER_ACTIVITY</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERACTIVITY_SLEEP">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_MEMBERACTIVITY_SLEEP'</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="VALUE" datatype="DECIMAL" length="13" scale="1" expressionLanguage="SQL">
+        <formula>CAST(&quot;MINUTES_ASLEEP&quot; AS DECIMAL)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="RAW_MEMBERACTIVITY_SLEEP">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="ACTIVITYDATE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERACTIVITY_STEPS">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="STEPS"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_MEMBERACTIVITY_STEPS'</formula>
+      </calculatedViewAttribute></calculatedViewAttributes>
+    <input node="RAW_MEMBER_STEP">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="ACTIVITYDATE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERCONTENTLEDGER">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="DATEINSERTED"/>
+      <viewAttribute id="TIME_LISTENED"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    
+      <viewAttribute id="CONTENTTYPEID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_SOURCE" datatype="NVARCHAR" length="50" expressionLanguage="SQL">
+        <formula>'RAW_MEMBERCONTENTLEDGER'</formula>
+      </calculatedViewAttribute>
+    
+      <calculatedViewAttribute id="DATE_LISTENED" datatype="DATE" expressionLanguage="SQL">
+    
+        <formula>TO_DATE(&quot;DATEINSERTED&quot;)</formula>
+    
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="RAW_MEMBERCONTENTLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_LISTENED" source="TIMELISTENED"/></input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_REWARD" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="REWARD_AMOUNT"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_REWARDLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="REWARD_AMOUNT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_REWARDLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_REWARDLEDGER">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="REWARD_AMOUNT"/>
+    
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_REWARDLEDGER'</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="RAW_REWARDLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="JOURNALENTRYID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="SYSDATETIMESTAMP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="AMOUNT"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_REWARDLEDGER">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_REWARDLEDGER$$$$RAW_REWARDLEDGER$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_SLEEP" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERACTIVITY_SLEEP">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MINUTES_ASLEEP" source="MINUTES_ASLEEP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_MEMBERACTIVITY_SLEEP">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERACTIVITY_SLEEP">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBERACTIVITY_SLEEP$$$$RAW_MEMBERACTIVITY_SLEEP$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_STEPS" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="STEP_COUNT"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERACTIVITY_STEPS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STEP_COUNT" source="STEPS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_MEMBERACTIVITY_STEPS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERACTIVITY_STEPS">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBERACTIVITY_STEPS$$$$RAW_MEMBER_STEP$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERCONTENT_MINUTES" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="EVENT_TYPE_ID_WITH_OPTION"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="DATE_LISTENED"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="TIME_LISTENED" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_DATE" datatype="TIMESTAMP" expressionLanguage="SQL">
+        <formula>CAST(&quot;DATE_LISTENED&quot; as TIMESTAMP)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="J_CONTENT_OPTIONS"/>
+    <filter>&quot;CONTENTTYPEID&quot; = 11</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_CONTENT_OPTIONS" cardinality="CN_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="DATE_LISTENED"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+    
+      <viewAttribute id="TIME_LISTENED"/>
+      <viewAttribute id="DATE_INSERTED"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_TYPE_ID_WITH_OPTION" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>CONCAT(&quot;EVENT_TYPE_ID&quot;,IFNULL(&quot;OPTIONID&quot;,''))</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="J_MEMBERCONTENTLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_LISTENED" source="DATE_LISTENED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_LISTENED" source="TIME_LISTENED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_INSERTED" source="DATE_INSERTED"/>
+    </input>
+    <input node="J_OPTIONS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPTIONID" source="OPTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+    </input>
+    <joinAttribute name="EVENT_TYPE_ID"/>
+    <joinAttribute name="MEMBERIDGUID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_MEMBERCONTENTLEDGER" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="DATE_LISTENED"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="TIME_LISTENED"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="DATE_INSERTED"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERCONTENTLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_INSERTED" source="DATEINSERTED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_LISTENED" source="TIME_LISTENED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_LISTENED" source="DATE_LISTENED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="RANK_BATCH">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_OPTIONS" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute hidden="true" id="JOIN$BATCHID$BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_CONTENT_OPTIONS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTIDGUID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPTIONID" source="OPTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$BATCHID$BATCHID" source="BATCHID"/>
+    </input>
+    <input node="RANK_BATCH">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$BATCHID$BATCHID" source="BATCHID"/>
+    </input>
+    <joinAttribute name="JOIN$BATCHID$BATCHID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="RANK_BATCH">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AGG_MEMBERCONTENTLEDGER"/>
+    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <order byViewAttributeName="LOADDATE" direction="DESC"/>
+      <rankThreshold>
+        <value>1</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_CONTENT_OPTIONS">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="OPTIONID"/>
+    
+      <viewAttribute id="MEMBERIDGUID"/>
+    
+      <viewAttribute id="BATCHID"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBERCONTENTLEDGER_OPTIONS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBERCONTENTLEDGER">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    
+      <viewAttribute id="BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBERCONTENTLEDGER$$$$RAW_MEMBERCONTENTLEDGER$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBERFORM">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+    
+      <viewAttribute id="EVENT_SOURCE"/>
+    
+      <viewAttribute id="BATCHID"/>
+    
+      <viewAttribute id="EVENT_FORM_TRANSACTIONID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_MEMBERFORMLEDGER'</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="VALUE" datatype="DECIMAL" length="13" scale="1" expressionLanguage="SQL">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="CV_MEMBER_FORM_LEDGER_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="DATEINSERTED"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_FORM_TRANSACTIONID" source="TRANSACTIONID"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="U_EVENT">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_FORM_TRANSACTIONID"/>
+      <viewAttribute id="VALUE"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+      <viewAttribute id="STEP_COUNT"/>
+      <viewAttribute id="REWARD_AMOUNT"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="TIME_LISTENED"/>
+      <viewAttribute id="EVENT_AWS_MET"/>
+      <viewAttribute id="EVENT_AWS_AVERAGE"/>
+      <viewAttribute id="EVENT_AWS_CALORIES"/>
+      <viewAttribute id="EVENT_AWS_DISTANCE"/>
+      <viewAttribute id="EVENT_AWS_STEPS"/>
+      <viewAttribute id="EVENT_AWS_EXCERSIZE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+      <viewAttribute id="EVENT_AWS_MINDFUL"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_MEMBERFORM" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_FORM_TRANSACTIONID" source="EVENT_FORM_TRANSACTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALUE" source="VALUE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CLIENTIDGUID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MINUTES_ASLEEP" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="STEP_COUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="REWARD_AMOUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENTTYPEID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MET" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_AVERAGE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_CALORIES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_DISTANCE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_STEPS" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MINDFUL" null="true" value=""/>
+    </input>
+    <input node="J_SLEEP" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_TYPE_ID" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_FORM_TRANSACTIONID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="VALUE" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MINUTES_ASLEEP" source="MINUTES_ASLEEP"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="STEP_COUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="REWARD_AMOUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENTTYPEID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MET" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_AVERAGE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_CALORIES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_DISTANCE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_STEPS" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MINDFUL" null="true" value=""/>
+    </input>
+    <input node="J_STEPS" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_TYPE_ID" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_FORM_TRANSACTIONID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="VALUE" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MINUTES_ASLEEP" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STEP_COUNT" source="STEP_COUNT"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="REWARD_AMOUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENTTYPEID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MET" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_AVERAGE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_CALORIES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_DISTANCE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_STEPS" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MINDFUL" null="true" value=""/>
+    </input>
+    <input node="J_REWARD" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_FORM_TRANSACTIONID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="VALUE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CLIENTIDGUID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MINUTES_ASLEEP" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="STEP_COUNT" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="REWARD_AMOUNT"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENTTYPEID" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MET" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_AVERAGE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_CALORIES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_DISTANCE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_STEPS" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MINDFUL" null="true" value=""/>
+    </input>
+  
+    <input node="P_MEMBERCONTENT" emptyUnionBehavior="NO_ROW">
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID_WITH_OPTION"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_FORM_TRANSACTIONID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="VALUE" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MINUTES_ASLEEP" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="STEP_COUNT" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="REWARD_AMOUNT" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_LISTENED" source="TIME_LISTENED"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MET" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_AVERAGE" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_CALORIES" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_DISTANCE" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_STEPS" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_AWS_MINDFUL" null="true" value=""/>
+  
+    </input>
+  
+    <input node="P_AWS_TRACKER" emptyUnionBehavior="NO_ROW">
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="EVENT_MEMBERIDGUID"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_TYPE_ID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="BATCHID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVENT_FORM_TRANSACTIONID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="VALUE" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CLIENTIDGUID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MINUTES_ASLEEP" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="STEP_COUNT" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="REWARD_AMOUNT" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENTTYPEID" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_MET" source="EVENT_AWS_MET"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_AVERAGE" source="EVENT_AWS_AVERAGE"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_CALORIES" source="EVENT_AWS_CALORIES"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_DISTANCE" source="EVENT_AWS_DISTANCE"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_STEPS" source="EVENT_AWS_STEPS"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_EXCERSIZE_MINUTES" source="EVENT_AWS_EXCERSIZE_MINUTES"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" source="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" source="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AWS_MINDFUL" source="EVENT_AWS_MINDFUL"/>
+  
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_MEMBERCONTENT">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="EVENT_TYPE_ID_WITH_OPTION"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="TIME_LISTENED"/>
+    
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/></viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_MEMBERCONTENTLEDGER'</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="U_CONTENT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_AWS_TRACKER">
+    <viewAttributes>
+      <viewAttribute id="EVENT_MEMBERIDGUID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_AWS_MET"/>
+      <viewAttribute id="EVENT_AWS_AVERAGE"/>
+      <viewAttribute id="EVENT_AWS_CALORIES"/>
+      <viewAttribute id="EVENT_AWS_DISTANCE"/>
+      <viewAttribute id="EVENT_AWS_STEPS"/>
+      <viewAttribute id="EVENT_AWS_EXCERSIZE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+      <viewAttribute id="EVENT_AWS_MINDFUL"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_SOURCE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>'RAW_AWS_MEMBERACTIVITY'</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="CV_AWS_MEMBER_ACTIVITY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="U_CONTENT">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="EVENT_TYPE_ID_WITH_OPTION"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="TIME_LISTENED"/>
+    
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="P_CONTENT" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID_WITH_OPTION" source="EVENT_TYPE_ID_WITH_OPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPTIONID" source="OPTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TIME_LISTENED" null="true" value=""/>
+    </input>
+    <input node="AGG_MEMBERCONTENT_MINUTES" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID_WITH_OPTION" source="EVENT_TYPE_ID_WITH_OPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_SOURCE" source="EVENT_SOURCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPTIONID" source="OPTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_TYPE_ID" source="EVENT_TYPE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="EVENT_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_LISTENED" source="TIME_LISTENED"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_CONTENT" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="EVENT_TYPE_ID_WITH_OPTION"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="J_CONTENT_OPTIONS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_DATE" source="DATE_INSERTED"/>
+    </input>
+    <filter>&quot;CONTENTTYPEID&quot; != 11</filter>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="U_EVENT">
+  <attributes>
+    <attribute id="MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="EVENT_TYPE_ID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_TYPE_ID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_TYPE_ID"/>
+    </attribute>
+    <attribute id="EVENT_DATE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_DATE"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_DATE"/>
+    </attribute>
+    <attribute id="EVENT_SOURCE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_SOURCE"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_SOURCE"/>
+    </attribute>
+    <attribute id="BATCHID" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BATCHID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="BATCHID"/>
+    </attribute>
+    <attribute id="EVENT_FORM_TRANSACTIONID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_FORM_TRANSACTIONID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_FORM_TRANSACTIONID"/>
+    </attribute>
+    <attribute id="VALUE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="VALUE"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="VALUE"/>
+    </attribute>
+    <attribute id="CLIENTIDGUID" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CLIENTIDGUID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="CLIENTIDGUID"/>
+    </attribute>
+    <attribute id="MINUTES_ASLEEP" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MINUTES_ASLEEP"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="MINUTES_ASLEEP"/>
+    </attribute>
+    <attribute id="STEP_COUNT" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STEP_COUNT"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="STEP_COUNT"/>
+    </attribute>
+    <attribute id="REWARD_AMOUNT" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REWARD_AMOUNT"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="REWARD_AMOUNT"/>
+    </attribute>
+    <attribute id="CONTENTTYPEID" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CONTENTTYPEID"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="CONTENTTYPEID"/>
+    </attribute>
+    <attribute id="TIME_LISTENED" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TIME_LISTENED"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="TIME_LISTENED"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MET" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_MET"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_MET"/>
+    </attribute>
+    <attribute id="EVENT_AWS_AVERAGE" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_AVERAGE"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_AVERAGE"/>
+    </attribute>
+    <attribute id="EVENT_AWS_CALORIES" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_CALORIES"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_CALORIES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_DISTANCE" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_DISTANCE"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_DISTANCE"/>
+    </attribute>
+    <attribute id="EVENT_AWS_STEPS" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_STEPS"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_STEPS"/>
+    </attribute>
+    <attribute id="EVENT_AWS_EXCERSIZE_MINUTES" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_EXCERSIZE_MINUTES"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_EXCERSIZE_MINUTES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MINDFUL" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_AWS_MINDFUL"/>
+      <keyMapping columnObjectName="U_EVENT" columnName="EVENT_AWS_MINDFUL"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="EVENT_DATE_IN_PREVIOUS_MONTH" order="23" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="BOOLEAN" expressionLanguage="SQL">
+        <formula>(TO_DATE(&quot;EVENT_DATE&quot;)&lt;=LAST_DAY(ADD_MONTHS(CURRENT_UTCDATE,-1)))  AND (TO_DATE(&quot;EVENT_DATE&quot;)&gt;LAST_DAY(ADD_MONTHS(CURRENT_UTCDATE,-2)))
+</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  
+    <calculatedAttribute id="EVENT_DATE_IN_OR_BEFORE_PREVIOUS_MONTH" order="24" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="BOOLEAN" expressionLanguage="SQL">
+        <formula>(TO_DATE(&quot;EVENT_DATE&quot;)&lt;=LAST_DAY(ADD_MONTHS(CURRENT_UTCDATE,-1)))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="1005.6946856346444" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="PRJ_MEMBERACTIVITY_SLEEP" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="2127.098255953959" y="636.9999976158142"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="PRJ_MEMBERACTIVITY_STEPS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1458.0982559539593" y="636.9999976158142"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_MEMBERCONTENTLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="743.8599897502888" y="1241.9999928474426"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_REWARD" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="673.4905732064019" y="456.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_REWARDLEDGER" modelObjectNameSpace="J_REWARD" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="197"/>
+    </shape>
+    <shape modelObjectName="AGG_REWARDLEDGER" modelObjectNameSpace="J_REWARD" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="201"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="PRJ_REWARDLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="636.9999976158142"/>
+      <rectangleSize height="30" width="270"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_REWARDLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="412.0000000000002" y="636.9999976158142"/>
+      <rectangleSize width="270"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="J_SLEEP" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1685.5165018931336" y="456.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBERACTIVITY_SLEEP" modelObjectNameSpace="J_SLEEP" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="252"/>
+    </shape>
+    <shape modelObjectName="AGG_MEMBERACTIVITY_SLEEP" modelObjectNameSpace="J_SLEEP" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="248"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_MEMBERACTIVITY_SLEEP" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1804.0982559539593" y="636.9999976158142"/>
+      <rectangleSize width="273"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_STEPS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1359.4548311650706" y="456.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBERACTIVITY_STEPS" modelObjectNameSpace="J_STEPS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="248"/>
+    </shape>
+    <shape modelObjectName="AGG_MEMBERACTIVITY_STEPS" modelObjectNameSpace="J_STEPS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="252"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_MEMBERACTIVITY_STEPS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1048.0982559539593" y="636.9999976158142"/>
+      <rectangleSize width="360"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="AGG_MEMBERCONTENT_MINUTES" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="696.6517578829267" y="776.9999964237213"/>
+      <rectangleSize height="30" width="296"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_CONTENT_OPTIONS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1015.9850912162601" y="921.9999952316284"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="J_MEMBERCONTENTLEDGER" modelObjectNameSpace="J_CONTENT_OPTIONS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="J_OPTIONS" modelObjectNameSpace="J_CONTENT_OPTIONS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="880" y="30"/>
+      <rectangleSize width="177"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="J_MEMBERCONTENTLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="911.8184245495934" y="1081.9999940395355"/>
+      <rectangleSize height="30" width="315"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBERCONTENTLEDGER" modelObjectNameSpace="J_MEMBERCONTENTLEDGER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="232" y="206"/>
+      <rectangleSize width="255"/>
+    </shape>
+    <shape modelObjectName="RANK_BATCH" modelObjectNameSpace="J_MEMBERCONTENTLEDGER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="580" y="192"/>
+      <rectangleSize width="146"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_OPTIONS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1305.584891641452" y="1081.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_CONTENT_OPTIONS" modelObjectNameSpace="J_OPTIONS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="212"/>
+    </shape>
+    <shape modelObjectName="RANK_BATCH" modelObjectNameSpace="J_OPTIONS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="462" y="152"/>
+      <rectangleSize width="146"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="RANK_BATCH" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1122.2515583081188" y="1241.9999928474426"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+  
+    <shape expanded="true" modelObjectName="PRJ_CONTENT_OPTIONS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1332.2515583081188" y="1241.9999928474426"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="AGG_MEMBERCONTENTLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1055.2515583081188" y="1346.9999928474426"/>
+      <rectangleSize width="294"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_MEMBERFORM" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="463.49057320640225" y="456.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="U_EVENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1005.6946856346444" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="P_MEMBERCONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="920.2150150355192" y="474.4999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="P_AWS_TRACKER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1149.4548311650706" y="456.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="U_CONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="791.3184245495934" y="636.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="P_CONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="1042.6517578829266" y="776.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

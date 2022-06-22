@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="STAR_MEMBER_EVENT_DETAILS_2" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="STAR_MEMBER_EVENT_DETAILS_2"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="FACT_MEMBER_EVENT_4">
+    <resourceUri>FACT_MEMBER_EVENT_4</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_MEMBER_EVENT">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="EVENT_TYPE_ID"/>
+      <viewAttribute id="EVENT_DATE"/>
+      <viewAttribute id="EVENT_SOURCE"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+      <viewAttribute id="STEP_COUNT"/>
+      <viewAttribute id="TIME_LISTENED"/>
+      <viewAttribute id="REWARD_AMOUNT"/>
+    
+      <viewAttribute id="EVENT_AWS_MET"/>
+      <viewAttribute id="EVENT_AWS_AVERAGE"/>
+      <viewAttribute id="EVENT_AWS_CALORIES"/>
+      <viewAttribute id="EVENT_AWS_DISTANCE"/>
+      <viewAttribute id="EVENT_AWS_STEPS"/>
+      <viewAttribute id="EVENT_AWS_EXCERSIZE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_MODERATELY_ACTIVE_MINUTES"/>
+      <viewAttribute id="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES"/>
+      <viewAttribute id="EVENT_AWS_MINDFUL"/>
+    
+      <viewAttribute id="EVENT_FORM_TRANSACTIONID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FACT_MEMBER_EVENT_4"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="PRJ_MEMBER_EVENT">
+  <attributes>
+    <attribute id="EVENT_MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_MEMBERIDGUID"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="EVENT_FORM_TRANSACTIONID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_FORM_TRANSACTIONID"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="EVENT_FORM_TRANSACTIONID"/>
+    </attribute>
+    <attribute id="EVENT_BATCHID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_BATCHID"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="BATCHID"/>
+    </attribute>
+    <attribute id="EVENT_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_DATE"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="EVENT_DATE"/>
+    </attribute>
+    <attribute id="EVENT_SOURCE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EVENT_SOURCE"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="EVENT_SOURCE"/>
+    </attribute>
+    <attribute id="EVENT_TYPE_ID$local">
+      <descriptions defaultDescription="EVENT_TYPE_ID"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="EVENT_TYPE_ID"/>
+    </attribute>
+    <attribute id="MEMBERIDGUID$local">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="MEMBERIDGUID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="MINUTES_ASLEEP" order="6" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MINUTES_ASLEEP"/>
+      <measureMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="MINUTES_ASLEEP"/>
+    </measure>
+    <measure id="STEP_COUNT" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="STEPS"/>
+      <measureMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="STEP_COUNT"/>
+    </measure>
+    <measure id="TIME_LISTENED" order="8" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="TIME_LISTENED"/>
+      <measureMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="TIME_LISTENED"/>
+    </measure>
+    <measure id="REWARD_AMOUNT" order="9" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="REWARD_AMOUNT"/>
+      <measureMapping columnObjectName="PRJ_MEMBER_EVENT" columnName="REWARD_AMOUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+  <sharedDimensions>
+    <logicalJoin associatedObjectUri="DIM_CONTENT">
+      <attributes>
+        <attributeRef>EVENT_TYPE_ID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>DIM_CONTENT_CONTENTIDGUID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_1" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference attributeName="DIM_CONTENT_CONTENTIDGUID" hidden="true"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="DIM_MEMBER">
+      <attributes>
+        <attributeRef>MEMBERIDGUID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>DIM_MEMBER_MEMBERIDGUID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_1" joinType="fullOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference attributeName="DIM_MEMBER_BATCHID" hidden="true"/>
+        <attributeReference attributeName="DIM_MEMBER_LOADDATE" hidden="true"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="DIM_MEMBER_HEALTH">
+      <attributes>
+        <attributeRef>MEMBERIDGUID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>DIM_MEMBER_HEALTH_MEMBERIDGUID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_1" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference attributeName="DIM_MEMBER_HEALTH_MEMBERIDGUID" hidden="true"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="DIM_REWARD_DETAILS">
+      <attributes>
+        <attributeRef>EVENT_TYPE_ID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>DIM_REWARD_JOURNALENTRYID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="C1_1" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference attributeName="DIM_REWARD_MEMBERIDGUID" hidden="true"/>
+        <attributeReference attributeName="DIM_REWARD_JOURNALENTRYID" hidden="true"/>
+        <attributeReference attributeName="DIM_REWARD_BATCHID" hidden="true"/>
+        <attributeReference attributeName="DIM_REWARD_LOADDATE" hidden="true"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="DIM_FORM_2">
+      <attributes>
+        <attributeRef>EVENT_TYPE_ID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>DIM_FORM_FIELDID_FIELDSET_KEY</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_1" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference attributeName="DIM_FORM_FORMID" hidden="true"/>
+        <attributeReference attributeName="DIM_FORM_WIDGETID" hidden="true"/>
+        <attributeReference attributeName="DIM_FORM_FIELDSETID" hidden="true"/>
+        <attributeReference attributeName="DIM_FORM_FIELDID_STR" hidden="true"/>
+        <attributeReference attributeName="DIM_FORM_FIELDID_FIELDSET_KEY" hidden="true"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+  </sharedDimensions>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="153" y="105"/>
+    
+      <rectangleSize width="212"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="PRJ_MEMBER_EVENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="153" y="331"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_MEMBER_EVENT" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+      <upperLeftCorner x="199" y="5"/>
+      <rectangleSize width="194"/>
+    </shape>
+    <shape modelObjectName="DIM_CONTENT" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="-362" y="-120"/>
+      <rectangleSize width="264"/>
+    </shape>
+    <shape modelObjectName="DIM_MEMBER" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="870" y="294"/>
+      <rectangleSize width="253"/>
+    </shape>
+    <shape modelObjectName="DIM_MEMBER_HEALTH" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="534" y="419"/>
+      <rectangleSize width="302"/>
+    </shape>
+    <shape modelObjectName="DIM_REWARD_DETAILS" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="-249" y="278"/>
+      <rectangleSize width="280"/>
+    </shape>
+    <shape modelObjectName="DIM_FORM_2" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="880" y="-43"/>
+      <rectangleSize width="279"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

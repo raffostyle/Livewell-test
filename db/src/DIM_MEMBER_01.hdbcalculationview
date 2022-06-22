@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_MEMBER_01" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_MEMBER_01"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBER">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+
+<logicalModel id="RAW_MEMBER">
+  <attributes>
+    <attribute id="MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DATECREATED" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DATECREATED"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="DATECREATED"/>
+    </attribute>
+    <attribute id="CLIENTID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CLIENTID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="CLIENTID"/>
+    </attribute>
+    <attribute id="LANGUAGEID" order="4" descriptionColumnName="LANG_TEXT" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LANGUAGEID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="LANGUAGEID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="LANG_TEXT" order="5" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TETSSST">
+        <comment text="THIS IS THE TEXT VERS"/>
+      </descriptions>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>CASE
+    WHEN &quot;LANGUAGEID&quot; = 1 THEN 'italian'
+    WHEN &quot;LANGUAGEID&quot; = 3 THEN 'English'
+    WHEN &quot;LANGUAGEID&quot; = 2 THEN 'Dutch'
+    WHEN &quot;LANGUAGEID&quot; = 8 THEN 'Arabic'
+    ELSE 'Elvish'
+END
+</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_FORM" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_FORM"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="com.sap::RAW_FORMS">
+    <resourceUri>com.sap::RAW_FORMS</resourceUri>
+  </DataSource>
+  <DataSource id="com.sap::RAW_FORMS_WIDGET_FIELDSET">
+    <resourceUri>com.sap::RAW_FORMS_WIDGET_FIELDSET</resourceUri>
+  </DataSource>
+  <DataSource id="com.sap::RAW_FORMS_WIDGET_FIELDSET_FIELDS">
+    <resourceUri>com.sap::RAW_FORMS_WIDGET_FIELDSET_FIELDS</resourceUri>
+  </DataSource>
+  <DataSource id="com.sap::RAW_FORMS_WIDGET">
+    <resourceUri>com.sap::RAW_FORMS_WIDGET</resourceUri>
+  </DataSource>
+  <DataSource id="FORMS_JOIN_3$$$$com.sap::RAW_FORMS$$">
+    <resourceUri>com.sap::RAW_FORMS</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_RAW_FORMS">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="com.sap::RAW_FORMS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_FORMS" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="TITLE_FIELDSET"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <viewAttribute id="WIGIDID"/>
+      <viewAttribute id="FIELDSET_SEQUENCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="TITLE_FORMS_WIDGET"/>
+      <viewAttribute id="FORMID_FORMS_WIDGET"/>
+      <viewAttribute id="WIDGETID_FORMS_WIDGET"/>
+      <viewAttribute id="BATCHID_FORMS_WIDGET"/>
+      <viewAttribute id="LOADDATE_FORMS"/>
+      <viewAttribute id="FORMID"/>
+      <viewAttribute id="WIDGET_SEQUENCE"/>
+      <viewAttribute id="NAME_FORMS"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FORMS_JOIN_3">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FIELDSET" source="TITLE_FIELDSET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_NAME" source="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDSETID" source="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIGIDID" source="WIGIDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSET_SEQUENCE" source="FIELDSET_SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FORMS_WIDGET" source="TITLE_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID_FORMS_WIDGET" source="FORMID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGETID_FORMS_WIDGET" source="WIDGETID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID_FORMS_WIDGET" source="BATCHID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE_FORMS" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID" source="FORMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGET_SEQUENCE" source="WIDGET_SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME_FORMS" source="NAME_FORMS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_FIELDID" source="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </input>
+    <input node="AGG_RAW_FORMS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE_FORMS" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="LOADDATE_FORMS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="FORMS_JOIN_1" cardinality="CN_N" joinType="leftOuter" multiJoinNode="FORMS_JOIN" multiJoinCentralTable="com.sap::RAW_FORMS" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="TITLE_FIELDSET"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <viewAttribute id="WIGIDID"/>
+      <viewAttribute id="FIELDSET_SEQUENCE"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute hidden="true" id="JOIN$FIELDSETID$FIELDSETID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="com.sap::RAW_FORMS_WIDGET_FIELDSET">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FIELDSET" source="TITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIGIDID" source="WIGIDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSET_SEQUENCE" source="SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$FIELDSETID$FIELDSETID" source="FIELDSETID"/>
+    </input>
+    <input node="com.sap::RAW_FORMS_WIDGET_FIELDSET_FIELDS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_NAME" source="FIELDNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDSETID" source="FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_FIELDID" source="FIELDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$FIELDSETID$FIELDSETID" source="FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+    </input>
+    <joinAttribute name="JOIN$FIELDSETID$FIELDSETID"/>
+    <joinAttribute name="BATCHID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="FORMS_JOIN_2" cardinality="CN_N" joinType="inner" multiJoinNode="FORMS_JOIN" multiJoinCentralTable="com.sap::RAW_FORMS" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="TITLE_FIELDSET"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <viewAttribute id="WIGIDID"/>
+      <viewAttribute id="FIELDSET_SEQUENCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="TITLE_FORMS_WIDGET"/>
+      <viewAttribute id="FORMID_FORMS_WIDGET"/>
+      <viewAttribute id="WIDGETID_FORMS_WIDGET"/>
+      <viewAttribute id="BATCHID_FORMS_WIDGET"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="FORMID"/>
+      <viewAttribute id="WIDGET_SEQUENCE"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="com.sap::RAW_FORMS_WIDGET">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FORMS_WIDGET" source="TITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID_FORMS_WIDGET" source="FORMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGETID_FORMS_WIDGET" source="WIDGETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID_FORMS_WIDGET" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID" source="FORMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGET_SEQUENCE" source="SEQUENCE"/>
+    </input>
+    <input node="FORMS_JOIN_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FIELDSET" source="TITLE_FIELDSET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_NAME" source="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDSETID" source="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIGIDID" source="WIGIDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSET_SEQUENCE" source="FIELDSET_SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_FIELDID" source="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGETID_FORMS_WIDGET" source="WIGIDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID_FORMS_WIDGET" source="BATCHID"/>
+    </input>
+    <joinAttribute name="WIDGETID_FORMS_WIDGET"/>
+    <joinAttribute name="BATCHID_FORMS_WIDGET"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="FORMS_JOIN_3" cardinality="C1_1" joinType="inner" multiJoinNode="FORMS_JOIN" multiJoinCentralTable="com.sap::RAW_FORMS" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="TITLE_FIELDSET"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <viewAttribute id="WIGIDID"/>
+      <viewAttribute id="FIELDSET_SEQUENCE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="TITLE_FORMS_WIDGET"/>
+      <viewAttribute id="FORMID_FORMS_WIDGET"/>
+      <viewAttribute id="WIDGETID_FORMS_WIDGET"/>
+      <viewAttribute id="BATCHID_FORMS_WIDGET"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="FORMID"/>
+      <viewAttribute id="WIDGET_SEQUENCE"/>
+      <viewAttribute id="NAME_FORMS"/>
+      <viewAttribute id="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FORMS_JOIN_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FIELDSET" source="TITLE_FIELDSET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_NAME" source="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDSETID" source="FIELDNAME_FIELDSET_FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIGIDID" source="WIGIDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSET_SEQUENCE" source="FIELDSET_SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE_FORMS_WIDGET" source="TITLE_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID_FORMS_WIDGET" source="FORMID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGETID_FORMS_WIDGET" source="WIDGETID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID_FORMS_WIDGET" source="BATCHID_FORMS_WIDGET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID" source="FORMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="WIDGET_SEQUENCE" source="WIDGET_SEQUENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDNAME_FIELDSET_FIELDS_FIELDID" source="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </input>
+    <input node="FORMS_JOIN_3$$$$com.sap::RAW_FORMS$$">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME_FORMS" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORMID" source="FORMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+    </input>
+    <joinAttribute name="FORMID"/>
+    <joinAttribute name="BATCHID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_FORMS">
+  <attributes>
+    <attribute id="DIM_FORM_TITLE_FORMS_WIDGET" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="TITLE_FORMS_WIDGET"/>
+    </attribute>
+    <attribute id="DIM_FORM_FORMID_FORMS_WIDGET" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="FORMID_FORMS_WIDGET"/>
+    </attribute>
+    <attribute id="DIM_FORM_WIDGETID_FORMS_WIDGET" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="WIDGETID_FORMS_WIDGET"/>
+    </attribute>
+    <attribute id="DIM_FORM_BATCHID_FORMS_WIDGET" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="BATCHID_FORMS_WIDGET"/>
+    </attribute>
+    <attribute id="DIM_FORM_NAME_FORMS" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="NAME_FORMS"/>
+    </attribute>
+    <attribute id="DIM_FORM_TITLE_FIELDSET" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="TITLE_FIELDSET"/>
+    </attribute>
+    <attribute id="DIM_FORM_FIELDNAME_FIELDSET_FIELDS_NAME" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="FIELDNAME_FIELDSET_FIELDS_NAME"/>
+    </attribute>
+    <attribute id="DIM_FORM_FIELDNAME_FIELDSET_FIELDSETID" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="FIELDNAME_FIELDSET_FIELDSETID"/>
+    </attribute>
+    <attribute id="DIM_FORM_FIELDSET_SEQUENCE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="FIELDSET_SEQUENCE"/>
+    </attribute>
+    <attribute id="DIM_FORM_WIDGET_SEQUENCE" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="WIDGET_SEQUENCE"/>
+    </attribute>
+    <attribute id="DIM_FORM_FIELDNAME_FIELDSET_FIELDS_FIELDID" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_FORMS" columnName="FIELDNAME_FIELDSET_FIELDS_FIELDID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="DIM_FORM_WIDGETID_FORMS_WIDGET_STR" order="1" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="100">
+        <formula>cast(&quot;DIM_FORM_WIDGETID_FORMS_WIDGET&quot; as nvarchar)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="DIM_FORM_FIELDNAME_FIELDSET_FIELDSETID_STR" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="100">
+        <formula>CAST(&quot;DIM_FORM_FIELDNAME_FIELDSET_FIELDSETID&quot; as NVARCHAR)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="DIM_FORM_FIELDNAME_FIELDSET_FIELDS_FIELDID_STR" order="3" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="100">
+        <formula>CAST(&quot;DIM_FORM_FIELDNAME_FIELDSET_FIELDS_FIELDID&quot; as NVARCHAR)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  
+    <calculatedAttribute id="CONCAT_FIELDID_FIELDSETID" order="15" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+  
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+  
+        <formula>CONCAT(IFNULL(&quot;DIM_FORM_FIELDNAME_FIELDSET_FIELDS_FIELDID_STR&quot;,''),IFNULL(&quot;DIM_FORM_FIELDNAME_FIELDSET_FIELDSETID_STR&quot;,''))</formula>
+  
+      </keyCalculation>
+  
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="240" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="AGG_RAW_FORMS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="376"/>
+      <rectangleSize height="30" width="184"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_FORMS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="240" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="FORMS_JOIN_3" modelObjectNameSpace="J_FORMS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape><shape><upperLeftCorner/><rectangleSize/></shape>
+    <shape modelObjectName="AGG_RAW_FORMS" modelObjectNameSpace="J_FORMS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="419" y="33"/>
+      <rectangleSize width="176"/>
+    </shape>
+  
+    
+  
+    <shape expanded="true" modelObjectName="FORMS_JOIN" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="326" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="com.sap::RAW_FORMS" modelObjectNameSpace="FORMS_JOIN" modelObjectType="JoinNodeInput" multiJoinViewNodeName="FORMS_JOIN">
+      <upperLeftCorner x="1359" y="11"/>
+      <rectangleSize width="198"/>
+    </shape>
+    <shape modelObjectName="com.sap::RAW_FORMS_WIDGET" modelObjectNameSpace="FORMS_JOIN" modelObjectType="JoinNodeInput" multiJoinViewNodeName="FORMS_JOIN">
+      <upperLeftCorner x="759" y="242"/>
+      <rectangleSize width="253"/>
+    </shape>
+    <shape modelObjectName="com.sap::RAW_FORMS_WIDGET_FIELDSET" modelObjectNameSpace="FORMS_JOIN" modelObjectType="JoinNodeInput" multiJoinViewNodeName="FORMS_JOIN">
+      <upperLeftCorner x="369" y="-22"/>
+      <rectangleSize width="318"/>
+    </shape>
+    <shape modelObjectName="com.sap::RAW_FORMS_WIDGET_FIELDSET_FIELDS" modelObjectNameSpace="FORMS_JOIN" modelObjectType="JoinNodeInput" multiJoinViewNodeName="FORMS_JOIN">
+      <upperLeftCorner x="25" y="242"/>
+      <rectangleSize width="367"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

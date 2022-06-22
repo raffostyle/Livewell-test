@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_MEMBER" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_MEMBER"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBER">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+  <DataSource id="PRJ_RAW_MEMBER$$$$RAW_MEMBER$$">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_CRM_CONTRACT">
+    <resourceUri>RAW_CRM_CONTRACT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_RAW_MEMBER">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="RAW_MEMBER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_RAW_MEMBER">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATECREATED"/>
+      <viewAttribute id="CLIENTID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="TIMEZONE"/>
+      <viewAttribute id="GROUPID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    
+      <viewAttribute id="OKTAIDHASH"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_RAW_MEMBER$$$$RAW_MEMBER$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_RAW_MEMBER" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATECREATED"/>
+      <viewAttribute id="CLIENTID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="TIMEZONE"/>
+      <viewAttribute id="GROUPID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    
+      <viewAttribute id="OKTAIDHASH"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_RAW_MEMBER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATECREATED" source="DATECREATED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTID" source="CLIENTID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LANGUAGEID" source="LANGUAGEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIMEZONE" source="TIMEZONE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPID" source="GROUPID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="OKTAIDHASH" source="OKTAIDHASH"/>
+    </input>
+    <input node="AGG_RAW_MEMBER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="U_RAW_MEMBER">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATECREATED"/>
+      <viewAttribute id="CLIENTID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="TIMEZONE"/>
+      <viewAttribute id="GROUPID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CLIENT_GROUP" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>CONCAT(&quot;CLIENTID&quot;, &quot;GROUPID&quot;)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="DIM_MEMBER_CONTRACT_ID" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>CASE
+WHEN &quot;CLIENT_GROUP&quot; = '14AUSTRALIA' THEN '4cae7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14COLOMBIA' THEN '44ad7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14NORDICS' THEN '2aad7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14HONG_KONG' THEN '42ad7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14CORPORATE' THEN '4cae7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14MEXICO' THEN '46ad7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '11RETAIL' THEN '7ab2c1d2-e85b-ec11-8f8f-000d3a28ed17'
+WHEN &quot;CLIENT_GROUP&quot; = '20ARGENTINA' THEN '0a4dd360-e692-ec11-b400-000d3a291634'
+WHEN &quot;CLIENT_GROUP&quot; = '20BRAZIL' THEN '8b6a381c-c194-ec11-b400-000d3a2a1e4d'
+WHEN &quot;CLIENT_GROUP&quot; = '20Chile' THEN 'b5e2f404-c294-ec11-b400-000d3a2a1e4d'
+WHEN &quot;CLIENT_GROUP&quot; = '20MARS' THEN 'e44de72d-c494-ec11-b400-000d3a2a1e4d'
+WHEN &quot;CLIENT_GROUP&quot; = '20MEXICO' THEN 'bf9c7b14-c394-ec11-b400-000d3a2a1e4d'
+WHEN &quot;CLIENT_GROUP&quot; = '20SPAIN' THEN 'ecd45896-c394-ec11-b400-000d3a2a1e4d'
+WHEN &quot;CLIENT_GROUP&quot; = '12SWITZERLAND' THEN '94ae7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '12MULTIPLE_COUNTRIES' THEN '94ae7ff4-d23c-ec11-b6e5-6045bd8ec328'
+WHEN &quot;CLIENT_GROUP&quot; = '14ITALY' THEN 'fd458349-e193-ec11-b400-000d3a291634'
+WHEN &quot;CLIENT_GROUP&quot; = '14PORTUGAL' THEN '6cab1c87-5f8a-ec11-93b0-6045bd8cd913'
+ELSE 'Undefined' END
+</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="P_MEMBERID" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATECREATED" source="DATECREATED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTID" source="CLIENTID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LANGUAGEID" source="LANGUAGEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIMEZONE" source="TIMEZONE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPID" source="GROUPID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_MEMBERID">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATECREATED"/>
+      <viewAttribute id="CLIENTID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="TIMEZONE"/>
+      <viewAttribute id="GROUPID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="J_RAW_MEMBER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_CRM_DATA">
+    <viewAttributes>
+      <viewAttribute id="LW_CONTRACTID"/>
+      <viewAttribute id="LW_COVEREDLIVES"/>
+      <viewAttribute id="LW_LAUNCHDATE"/>
+      <viewAttribute id="LW_ACTUALLAUNCHDATE"/>
+      <viewAttribute id="STATUSCODE"/>
+      <viewAttribute id="LW_NAME"/>
+      <viewAttribute id="LW_DISTRIBUTIONPARTNER"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_CRM_CONTRACT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_CRM" cardinality="CN_1" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DATECREATED"/>
+      <viewAttribute id="CLIENTID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="TIMEZONE"/>
+      <viewAttribute id="GROUPID"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="CLIENT_GROUP"/>
+      <viewAttribute id="LW_CONTRACTID"/>
+      <viewAttribute id="LW_COVEREDLIVES"/>
+      <viewAttribute id="LW_LAUNCHDATE"/>
+      <viewAttribute id="LW_ACTUALLAUNCHDATE"/>
+      <viewAttribute id="STATUSCODE"/>
+      <viewAttribute id="LW_NAME"/>
+      <viewAttribute id="LW_DISTRIBUTIONPARTNER"/>
+      <viewAttribute hidden="true" id="JOIN$DIM_MEMBER_CONTRACT_ID$LW_CONTRACTID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="U_RAW_MEMBER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATECREATED" source="DATECREATED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTID" source="CLIENTID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LANGUAGEID" source="LANGUAGEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIMEZONE" source="TIMEZONE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPID" source="GROUPID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENT_GROUP" source="CLIENT_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DIM_MEMBER_CONTRACT_ID$LW_CONTRACTID" source="DIM_MEMBER_CONTRACT_ID"/>
+    </input>
+    <input node="P_CRM_DATA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_CONTRACTID" source="LW_CONTRACTID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_COVEREDLIVES" source="LW_COVEREDLIVES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_LAUNCHDATE" source="LW_LAUNCHDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_ACTUALLAUNCHDATE" source="LW_ACTUALLAUNCHDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATUSCODE" source="STATUSCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_NAME" source="LW_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LW_DISTRIBUTIONPARTNER" source="LW_DISTRIBUTIONPARTNER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DIM_MEMBER_CONTRACT_ID$LW_CONTRACTID" source="LW_CONTRACTID"/>
+    </input>
+    <joinAttribute name="JOIN$DIM_MEMBER_CONTRACT_ID$LW_CONTRACTID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_CRM">
+  <attributes>
+    <attribute id="DIM_MEMBER_MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_DATECREATED" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="DATECREATED"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CLIENTID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="CLIENTID"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_GROUPID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="GROUPID"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_TIMEZONE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="TIMEZONE"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_CONTRACTID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_CONTRACTID"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_COVEREDLIVES" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_COVEREDLIVES"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_LAUNCHDATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_LAUNCHDATE"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_ACTUALLAUNCHDATE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_ACTUALLAUNCHDATE"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_STATUSCODE" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CRM" columnName="STATUSCODE"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_CUSTOMER_NAME" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LW_NAME"/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_NAME"/>
+    </attribute>
+    <attribute id="DIM_MEMBER_CRM_DISTRIBUTIONPARTNER" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LW_DISTRIBUTIONPARTNER"/>
+      <keyMapping columnObjectName="J_CRM" columnName="LW_DISTRIBUTIONPARTNER"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.7914732189743" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AGG_RAW_MEMBER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="95.73991606883456" y="766.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_RAW_MEMBER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="305.7399160688346" y="766.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_RAW_MEMBER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="246.91177484398779" y="606.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_RAW_MEMBER" modelObjectNameSpace="J_RAW_MEMBER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="603" y="30"/>
+      <rectangleSize width="186"/>
+    </shape>
+    <shape modelObjectName="AGG_RAW_MEMBER" modelObjectNameSpace="J_RAW_MEMBER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="182"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="U_RAW_MEMBER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="P_MEMBERID" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="246.91177484398779" y="501.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="P_CRM_DATA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_CRM" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.79147321897426" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="U_RAW_MEMBER" modelObjectNameSpace="J_CRM" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="224"/>
+    </shape>
+    <shape modelObjectName="P_CRM_DATA" modelObjectNameSpace="J_CRM" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="244"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

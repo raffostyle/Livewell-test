@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_MEMBER_FORM_LEDGER_2" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription=""/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBERFORMLEDGER_FIELDIDS">
+    <resourceUri>RAW_MEMBERFORMLEDGER_FIELDIDS</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBERFORMLEDGER">
+    <resourceUri>RAW_MEMBERFORMLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="agg_memberformledger$$$$RAW_MEMBERFORMLEDGER$$">
+    <resourceUri>RAW_MEMBERFORMLEDGER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="prj_memberfieldid">
+    <viewAttributes>
+      <viewAttribute id="FIELDIDKEY"/>
+      <viewAttribute id="FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBERFORMLEDGER_FIELDIDS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="memberformledger" cardinality="C1_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="TRANSACTIONID"/>
+      <viewAttribute id="ACTIVEVALUE"/>
+      <viewAttribute id="FIELDSETID"/>
+      <viewAttribute id="FIELDTYPEID"/>
+      <viewAttribute id="DATEINSERTED"/>
+      <viewAttribute id="FIELDIDKEY"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="FIELDID"/>
+      <viewAttribute id="FIELDID_1"/>
+    
+      <viewAttribute id="FIELDIDKEY_1"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CONCAT_FIELDID_FIELDSETID" datatype="NVARCHAR" length="40" expressionLanguage="SQL">
+        <formula>CONCAT(IFNULL(&quot;COLLATE_FIELDID&quot;,''),IFNULL(&quot;FIELDSETID&quot;,''))</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="COLLATE_FIELDID" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>IFNULL(&quot;FIELDID&quot;,&quot;FIELDID_1&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="j_memberformledger">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTIONID" source="TRANSACTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVEVALUE" source="ACTIVEVALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSETID" source="FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDTYPEID" source="FIELDTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATEINSERTED" source="DATEINSERTED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDIDKEY" source="FIELDIDKEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDID" source="FIELDID"/>
+    </input>
+    <input node="prj_memberfieldid">
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDID_1" source="FIELDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDIDKEY_1" source="FIELDIDKEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDIDKEY" source="FIELDIDKEY"/>
+    </input>
+    <joinAttribute name="FIELDIDKEY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="j_memberformledger" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="TRANSACTIONID"/>
+      <viewAttribute id="ACTIVEVALUE"/>
+      <viewAttribute id="FIELDSETID"/>
+      <viewAttribute id="FIELDTYPEID"/>
+      <viewAttribute id="DATEINSERTED"/>
+      <viewAttribute id="FIELDIDKEY"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="prj_memform">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTIONID" source="TRANSACTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVEVALUE" source="ACTIVEVALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDSETID" source="FIELDSETID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDTYPEID" source="FIELDTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATEINSERTED" source="DATEINSERTED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDIDKEY" source="FIELDIDKEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIELDID" source="FIELDID"/>
+    </input>
+    <input node="agg_memberformledger">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="prj_memform">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="TRANSACTIONID"/>
+      <viewAttribute id="ACTIVEVALUE"/>
+      <viewAttribute id="FIELDSETID"/>
+      <viewAttribute id="FIELDTYPEID"/>
+      <viewAttribute id="DATEINSERTED"/>
+      <viewAttribute id="FIELDIDKEY"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="FIELDID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBERFORMLEDGER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="agg_memberformledger">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="agg_memberformledger$$$$RAW_MEMBERFORMLEDGER$$"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="memberformledger">
+  <attributes>
+    <attribute id="EVENT_TYPE_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="memberformledger" columnName="CONCAT_FIELDID_FIELDSETID"/>
+    </attribute>
+    <attribute id="MEMBERIDGUID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="memberformledger" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="TRANSACTIONID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TRANSACTIONID"/>
+      <keyMapping columnObjectName="memberformledger" columnName="TRANSACTIONID"/>
+    </attribute>
+    <attribute id="ACTIVEVALUE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTIVEVALUE"/>
+      <keyMapping columnObjectName="memberformledger" columnName="ACTIVEVALUE"/>
+    </attribute>
+    <attribute id="FIELDSETID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIELDSETID"/>
+      <keyMapping columnObjectName="memberformledger" columnName="FIELDSETID"/>
+    </attribute>
+    <attribute id="FIELDTYPEID" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIELDTYPEID"/>
+      <keyMapping columnObjectName="memberformledger" columnName="FIELDTYPEID"/>
+    </attribute>
+    <attribute id="DATEINSERTED" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DATEINSERTED"/>
+      <keyMapping columnObjectName="memberformledger" columnName="DATEINSERTED"/>
+    </attribute>
+    <attribute id="FIELDIDKEY" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIELDIDKEY"/>
+      <keyMapping columnObjectName="memberformledger" columnName="FIELDIDKEY"/>
+    </attribute>
+    <attribute id="BATCHID" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BATCHID"/>
+      <keyMapping columnObjectName="memberformledger" columnName="BATCHID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="EVENT_SOURCE" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>'RAW_MEMBERFORMLEDGER'</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="328" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="prj_memberfieldid" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="395" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="memberformledger" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="328" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="j_memberformledger" modelObjectNameSpace="memberformledger" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="114" y="-30"/>
+      <rectangleSize width="183"/>
+    </shape>
+    <shape modelObjectName="prj_memberfieldid" modelObjectNameSpace="memberformledger" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="84" y="164"/>
+      <rectangleSize width="168"/>
+    </shape>
+    <shape expanded="true" modelObjectName="j_memberformledger" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="prj_memform" modelObjectNameSpace="j_memberformledger" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="195"/>
+    </shape>
+    <shape modelObjectName="agg_memberformledger" modelObjectNameSpace="j_memberformledger" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="620" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="false" modelObjectName="prj_memform" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-123" y="538"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="agg_memberformledger" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="536"/>
+      <rectangleSize width="160"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,20 @@
+{
+  "RAW_MEMBER": {
+    "target": {
+      "object": "RAW_MEMBER",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBER_SLEPP": {
+    "target": {
+      "object": "RAW_MEMBERACTIVITY_SLEEP",
+      "schema": "DBADMIN"
+    }
+  },
+  "RAW_MEMBER_STEP": {
+    "target": {
+      "object": "RAW_MEMBERACTIVITY_STEPS",
+      "schema": "DBADMIN"
+    }
+  }
+}

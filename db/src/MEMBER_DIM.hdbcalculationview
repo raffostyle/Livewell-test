@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MEMBER_DIM" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="MEMBER_DIM"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBER">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+
+<logicalModel id="RAW_MEMBER">
+  <attributes>
+    <attribute id="MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DATECREATED" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DATECREATED"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="DATECREATED"/>
+    </attribute>
+    <attribute id="CLIENTID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CLIENTID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="CLIENTID"/>
+    </attribute>
+    <attribute id="LANGUAGEID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LANGUAGEID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="LANGUAGEID"/>
+    </attribute>
+    <attribute id="TIMEZONE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TIMEZONE"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="TIMEZONE"/>
+    </attribute>
+    <attribute id="LOADDATE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LOADDATE"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="LOADDATE"/>
+    </attribute>
+    <attribute id="GROUPID" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="GROUPID"/>
+      <keyMapping columnObjectName="RAW_MEMBER" columnName="GROUPID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="LANG_TEXT" order="8" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LANG_TEXT"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="13">
+        <formula>CASE
+    WHEN &quot;LANGUAGEID&quot; = 1 THEN 'italian'
+    WHEN &quot;LANGUAGEID&quot; = 3 THEN 'English'
+    WHEN &quot;LANGUAGEID&quot; = 2 THEN 'Dutch'
+    WHEN &quot;LANGUAGEID&quot; = 8 THEN 'Arabic'
+    ELSE 'Elvish'
+END
+</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  </shapes>
+</layout>
+</Calculation:scenario>

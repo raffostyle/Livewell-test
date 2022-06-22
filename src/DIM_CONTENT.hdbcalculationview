@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_CONTENT" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_CONTENT"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="com.sap::RAW_CONTENT">
+    <resourceUri>com.sap::RAW_CONTENT</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_CONTENT_OPTIONS">
+    <resourceUri>RAW_CONTENT_OPTIONS</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_CONTENT$$$$com.sap::RAW_CONTENT$$">
+    <resourceUri>com.sap::RAW_CONTENT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_CONTENT">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="PUBLISHDATE"/>
+      <viewAttribute id="TITLE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="com.sap::RAW_CONTENT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_OPTIONS" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="LANGUAGEID"/>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="TEXT"/>
+      <viewAttribute id="BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_CONTENT_OPTIONS"/>
+    <filter>&quot;LANGUAGEID&quot;=1</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_CONTENT">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    
+      <viewAttribute id="BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_CONTENT$$$$com.sap::RAW_CONTENT$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_CONTENT" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="PUBLISHDATE"/>
+      <viewAttribute id="TITLE"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="P_CONTENT">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTIDGUID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PUBLISHDATE" source="PUBLISHDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE" source="TITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="RANK_BATCH">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_OPTIONS" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="OPTIONID"/>
+      <viewAttribute id="TEXT"/>
+      <viewAttribute hidden="true" id="JOIN$BATCHID$BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="P_OPTIONS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTIDGUID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPTIONID" source="OPTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TEXT" source="TEXT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$BATCHID$BATCHID" source="BATCHID"/>
+    </input>
+    <input node="RANK_BATCH">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$BATCHID$BATCHID" source="BATCHID"/>
+    </input>
+    <joinAttribute name="JOIN$BATCHID$BATCHID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_CONTENT_DIM" cardinality="C1_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="CONTENTIDGUID"/>
+      <viewAttribute id="CONTENTTYPEID"/>
+      <viewAttribute id="PUBLISHDATE"/>
+      <viewAttribute id="TITLE"/>
+      <viewAttribute id="TEXT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="J_CONTENT">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTIDGUID" source="CONTENTIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTTYPEID" source="CONTENTTYPEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PUBLISHDATE" source="PUBLISHDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE" source="TITLE"/>
+    </input>
+    <input node="J_OPTIONS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TEXT" source="TEXT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTENTIDGUID" source="CONTENTIDGUID"/>
+    </input>
+    <joinAttribute name="CONTENTIDGUID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="RANK_BATCH">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="BATCHID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AGG_CONTENT"/>
+    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <order byViewAttributeName="LOADDATE" direction="DESC"/>
+      <rankThreshold>
+        <value>1</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_CONTENT_DIM">
+  <attributes>
+    <attribute id="DIM_CONTENT_CONTENTIDGUID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CONTENT_DIM" columnName="CONTENTIDGUID"/>
+    </attribute>
+    <attribute id="DIM_CONTENT_CONTENTTYPEID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CONTENT_DIM" columnName="CONTENTTYPEID"/>
+    </attribute>
+    <attribute id="DIM_CONTENT_PUBLISHDATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CONTENT_DIM" columnName="PUBLISHDATE"/>
+    </attribute>
+    <attribute id="DIM_CONTENT_TITLE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CONTENT_DIM" columnName="TITLE"/>
+    </attribute>
+    <attribute id="DIM_CONTENT_OPTION_TEXT" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_CONTENT_DIM" columnName="TEXT"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="DIM_CONTENT_TYPE_DESCRIPTION" order="1" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="40">
+        <formula>CASE
+WHEN &quot;DIM_CONTENT_CONTENTTYPEID&quot; = 1 THEN 'Article'
+WHEN &quot;DIM_CONTENT_CONTENTTYPEID&quot; = 11 THEN 'Meditation'
+WHEN &quot;DIM_CONTENT_CONTENTTYPEID&quot; = 2 THEN 'Poll'
+WHEN &quot;DIM_CONTENT_CONTENTTYPEID&quot; = 3 THEN 'Tracker'
+WHEN &quot;DIM_CONTENT_CONTENTTYPEID&quot; = 10 THEN 'Video'
+ELSE 'Undefined'
+END</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="383.5038288523704" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="P_CONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="527.4791008561613" y="536.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="P_OPTIONS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="536.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_CONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="291.68123143097944" y="681.9999964237213"/>
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_CONTENT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="422.5085013703755" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="P_CONTENT" modelObjectNameSpace="J_CONTENT" modelObjectType="JoinNodeInput" multiJoinViewNodeName="J_CONTENT">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="178"/>
+    </shape>
+    <shape modelObjectName="RANK_BATCH" modelObjectNameSpace="J_CONTENT" modelObjectType="JoinNodeInput" multiJoinViewNodeName="J_CONTENT">
+      <upperLeftCorner x="620" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_OPTIONS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.66666666666663" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="P_OPTIONS" modelObjectNameSpace="J_OPTIONS" modelObjectType="JoinNodeInput" multiJoinViewNodeName="J_OPTIONS">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="133"/>
+    </shape>
+    <shape modelObjectName="RANK_BATCH" modelObjectNameSpace="J_OPTIONS" modelObjectType="JoinNodeInput" multiJoinViewNodeName="J_OPTIONS">
+      <upperLeftCorner x="620" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_CONTENT_DIM" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="383.5038288523704" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="J_CONTENT" modelObjectNameSpace="J_CONTENT_DIM" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="178"/>
+    </shape>
+    <shape modelObjectName="J_OPTIONS" modelObjectNameSpace="J_CONTENT_DIM" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="314" y="14"/>
+      <rectangleSize width="177"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="RANK_BATCH" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000017" y="543.6666642824808"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

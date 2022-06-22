@@ -1,0 +1,8 @@
+{
+  "com.sap::RAW_FORMS_WIDGET_FIELDSET": {
+    "target": {
+      "object": "RAW_FORMS_WIDGET_FIELDSET",
+      "schema": "DBADMIN"
+    }
+  }
+}

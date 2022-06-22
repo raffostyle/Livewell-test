@@ -1,0 +1,32 @@
+{
+  "com.sap::RAW_MEMBERFORMLEDGER": {
+    "target": {
+      "object": "RAW_MEMBERFORMLEDGER",
+      "schema": "DBADMIN"
+    }
+  },
+  "com.sap::RAW_MEMBERFORMLEDGER_FIELDIDS": {
+    "target": {
+      "object": "RAW_MEMBERFORMLEDGER_FIELDIDS",
+      "schema": "DBADMIN"
+    }
+  },
+  "com.sap::RAW_MEMBERCONTENTLEDGER": {
+    "target": {
+      "object": "RAW_MEMBERCONTENTLEDGER",
+      "schema": "DBADMIN"
+    }
+  },
+  "com.sap::RAW_AWS_MEMBERACTIVITY": {
+    "target": {
+      "object": "RAW_AWS_MEMBERACTIVITY",
+      "schema": "DBADMIN"
+    }
+  },
+  "com.sap::CRM_CONTRACT_CSV": {
+    "target": {
+      "object": "CRM_CONTRACT_CSV",
+      "schema": "DBADMIN"
+    }
+  }
+}

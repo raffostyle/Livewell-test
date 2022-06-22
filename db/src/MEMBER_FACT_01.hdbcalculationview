@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MEMBER_FACT_01" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="MEMBER_FACT_01"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_MEMBER_SLEPP">
+    <resourceUri>RAW_MEMBER_SLEPP</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBER_STEP">
+    <resourceUri>RAW_MEMBER_STEP</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Membersleep">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBER_SLEPP"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+      <viewAttribute id="ACTIVEVALUE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBER_STEP"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTIVEVALUE"/>
+    
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="MINUTES_ASLEEP" aggregationType="sum"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Membersleep">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MINUTES_ASLEEP" source="MINUTES_ASLEEP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+    </input>
+    <input node="Projection_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVEVALUE" source="ACTIVEVALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLIENTIDGUID" source="CLIENTIDGUID"/>
+    </input>
+    <joinAttribute name="MEMBERIDGUID"/>
+    <joinAttribute name="CLIENTIDGUID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="ACTIVEVALUE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTIVEVALUE"/>
+      <keyMapping columnObjectName="Join_1" columnName="ACTIVEVALUE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Membersleep" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-195" y="354"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="153" y="354"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="10" y="244"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Membersleep" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="Projection_2" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

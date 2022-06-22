@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="LW_DEMO_START_01" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="LW_DEMO_START_01"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="MEMBER_FACT_01">
+    <resourceUri>MEMBER_FACT_01</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="MINUTES_ASLEEP"/>
+      <viewAttribute id="CLIENTIDGUID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="MEMBER_FACT_01"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Projection_1">
+  <attributes>
+    <attribute id="MEMBERIDGUID_1" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="MEMBERIDGUID$local">
+      <descriptions defaultDescription="MEMBERIDGUID"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="CLIENTIDGUID$local">
+      <keyMapping columnObjectName="Projection_1" columnName="CLIENTIDGUID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="MINUTES_ASLEEP" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MINUTES_ASLEEP"/>
+      <measureMapping columnObjectName="Projection_1" columnName="MINUTES_ASLEEP"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+  <sharedDimensions>
+    <logicalJoin associatedObjectUri="MEMBER_DIM">
+      <attributes>
+        <attributeRef>MEMBERIDGUID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>MEMBERIDGUID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_N" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures/>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="DIM_MEMBER_01">
+      <attributes>
+        <attributeRef>CLIENTIDGUID$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>CLIENTID</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_N" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures>
+        <attributeReference alias="MEMBERIDGUID_2" attributeName="MEMBERIDGUID"/>
+        <attributeReference alias="DATECREATED_1" attributeName="DATECREATED"/>
+        <attributeReference alias="CLIENTID_1" attributeName="CLIENTID"/>
+        <attributeReference alias="LANGUAGEID_1" attributeName="LANGUAGEID"/>
+        <attributeReference alias="LANG_TEXT_1" attributeName="LANG_TEXT"/>
+      </associatedAttributeFeatures>
+    </logicalJoin>
+  </sharedDimensions>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-245" y="228"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Projection_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+      <upperLeftCorner x="260" y="65"/>
+      <rectangleSize width="184"/>
+    </shape>
+    <shape modelObjectName="MEMBER_DIM" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="563" y="2"/>
+      <rectangleSize width="172"/>
+    </shape>
+  
+    <shape modelObjectName="DIM_MEMBER_01" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="863" y="30"/>
+      <rectangleSize width="172.78076171875"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

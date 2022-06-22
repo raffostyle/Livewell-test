@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_REWARD_DETAILS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_REWARD_DETAILS"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_REWARDLEDGER">
+    <resourceUri>RAW_REWARDLEDGER</resourceUri>
+  </DataSource>
+  <DataSource id="PRJ_REWARDLEDGER$$$$RAW_REWARDLEDGER$$">
+    <resourceUri>RAW_REWARDLEDGER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_REWARDLEDGER">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="RAW_REWARDLEDGER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_REWARDLEDGER">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="JOURNALENTRYID"/>
+      <viewAttribute id="PARTITIONKEY"/>
+      <viewAttribute id="TRANSACTIONID"/>
+      <viewAttribute id="REFERENCE"/>
+      <viewAttribute id="TYPE"/>
+      <viewAttribute id="ACCOUNTTYPE"/>
+      <viewAttribute id="CORRELATIONID"/>
+      <viewAttribute id="EVENTNAME"/>
+      <viewAttribute id="SYSDATETIMESTAMP"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="AMOUNT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="PRJ_REWARDLEDGER$$$$RAW_REWARDLEDGER$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_REWARDLEDGER" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="JOURNALENTRYID"/>
+      <viewAttribute id="PARTITIONKEY"/>
+      <viewAttribute id="TRANSACTIONID"/>
+      <viewAttribute id="REFERENCE"/>
+      <viewAttribute id="TYPE"/>
+      <viewAttribute id="ACCOUNTTYPE"/>
+      <viewAttribute id="CORRELATIONID"/>
+      <viewAttribute id="EVENTNAME"/>
+      <viewAttribute id="SYSDATETIMESTAMP"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+      <viewAttribute id="AMOUNT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_REWARDLEDGER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOURNALENTRYID" source="JOURNALENTRYID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PARTITIONKEY" source="PARTITIONKEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTIONID" source="TRANSACTIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REFERENCE" source="REFERENCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TYPE" source="TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACCOUNTTYPE" source="ACCOUNTTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CORRELATIONID" source="CORRELATIONID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EVENTNAME" source="EVENTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYSDATETIMESTAMP" source="SYSDATETIMESTAMP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
+    </input>
+  
+    <input node="AGG_REWARDLEDGER">
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+  
+    </input>
+    <joinAttribute name="LOADDATE"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_REWARDLEDGER">
+  <attributes>
+    <attribute id="DIM_REWARD_MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DIM_REWARD_JOURNALENTRYID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="JOURNALENTRYID"/>
+    </attribute>
+    <attribute id="DIM_REWARD_PARTITIONKEY" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="PARTITIONKEY"/>
+    </attribute>
+    <attribute id="DIM_REWARD_TRANSACTIONID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="TRANSACTIONID"/>
+    </attribute>
+    <attribute id="DIM_REWARD_REFERENCE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="REFERENCE"/>
+    </attribute>
+    <attribute id="DIM_REWARD_TYPE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="TYPE"/>
+    </attribute>
+    <attribute id="DIM_REWARD_ACCOUNTTYPE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="ACCOUNTTYPE"/>
+    </attribute>
+    <attribute id="DIM_REWARD_CORRELATIONID" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="CORRELATIONID"/>
+    </attribute>
+    <attribute id="DIM_REWARD_EVENTNAME" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="EVENTNAME"/>
+    </attribute>
+    <attribute id="DIM_REWARD_SYSDATETIMESTAMP" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="SYSDATETIMESTAMP"/>
+    </attribute>
+    <attribute id="DIM_REWARD_BATCHID" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="BATCHID"/>
+    </attribute>
+    <attribute id="DIM_REWARD_LOADDATE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_REWARDLEDGER" columnName="LOADDATE"/>
+    </attribute></attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="DIM_REWARD_EVENT_NAME_LONG" order="13" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions>
+        <comment text="this is dodgy AF but works for the time being"/>
+      </descriptions>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="40">
+        <formula>LTRIM(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+&quot;DIM_REWARD_EVENTNAME&quot;
+,'Achieved5','Achieved 5')
+,'30',' 30')
+,'50',' 50')
+,'5 Day',' 5 Day')
+,'60',' 60')
+,'1',' 1')
+,'A',' A')
+,'B',' B')
+,'C',' C')
+,'D',' D')
+,'E',' E')
+,'F',' F')
+,'G',' G')
+,'H',' H')
+,'I',' I')
+,'J',' J')
+,'K',' K')
+,'L',' L')
+,'M',' M')
+,'N',' N')
+,'O',' O')
+,'P',' P')
+,'Q',' Q')
+,'R',' R')
+,'S',' S')
+,'T',' T')
+,'U',' U')
+,'V',' V')
+,'W',' W')
+,'X',' X')
+,'Y',' Y')
+,'Z',' Z')
+)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AGG_REWARDLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="314" y="300"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRJ_REWARDLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="300"/>
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_REWARDLEDGER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="110" y="184"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_REWARDLEDGER" modelObjectNameSpace="J_REWARDLEDGER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="199"/>
+    </shape>
+  
+    <shape modelObjectName="AGG_REWARDLEDGER" modelObjectNameSpace="J_REWARDLEDGER" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

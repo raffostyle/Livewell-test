@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_AWS_MEMBER_ACTIVITY" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="CV_AWS_MEMBER_ACTIVITY"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_AWS_MEMBERACTIVITY">
+    <resourceUri>RAW_AWS_MEMBERACTIVITY</resourceUri>
+  </DataSource>
+  <DataSource id="RAW_MEMBER">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_MEMBER$$$$RAW_MEMBER$$">
+    <resourceUri>RAW_MEMBER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_AWS">
+    <viewAttributes>
+      <viewAttribute id="USER"/>
+      <viewAttribute id="DAY"/>
+      <viewAttribute id="OFFSET"/>
+      <viewAttribute id="MET"/>
+      <viewAttribute id="AVERAGE"/>
+      <viewAttribute id="CALORIES"/>
+      <viewAttribute id="DISTANCE"/>
+      <viewAttribute id="STEPS"/>
+      <viewAttribute id="EXCERSIZE_MINUTES"/>
+      <viewAttribute id="MODERATELY_ACTIVE_MINUTES"/>
+      <viewAttribute id="VIGOROUSLY_ACTIVE_MINTUES"/>
+      <viewAttribute id="MINDFUL"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_AWS_MEMBERACTIVITY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_OKTA">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="OKTAIDHASH"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_MEMBER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_AWS" cardinality="CN_1" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="DAY"/>
+      <viewAttribute id="MET"/>
+      <viewAttribute id="AVERAGE"/>
+      <viewAttribute id="CALORIES"/>
+      <viewAttribute id="DISTANCE"/>
+      <viewAttribute id="STEPS"/>
+      <viewAttribute id="EXCERSIZE_MINUTES"/>
+      <viewAttribute id="MODERATELY_ACTIVE_MINUTES"/>
+      <viewAttribute id="VIGOROUSLY_ACTIVE_MINTUES"/>
+      <viewAttribute id="MINDFUL"/>
+      <viewAttribute hidden="true" id="JOIN$USER$OKTAIDHASH"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EVENT_DATE" datatype="TIMESTAMP" expressionLanguage="SQL">
+        <formula>CAST(&quot;DAY&quot; AS TIMESTAMP)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="PRJ_AWS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DAY" source="DAY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MET" source="MET"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AVERAGE" source="AVERAGE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CALORIES" source="CALORIES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DISTANCE" source="DISTANCE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STEPS" source="STEPS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EXCERSIZE_MINUTES" source="EXCERSIZE_MINUTES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MODERATELY_ACTIVE_MINUTES" source="MODERATELY_ACTIVE_MINUTES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VIGOROUSLY_ACTIVE_MINTUES" source="VIGOROUSLY_ACTIVE_MINTUES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MINDFUL" source="MINDFUL"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USER$OKTAIDHASH" source="USER"/>
+    </input>
+    <input node="J_OKTA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USER$OKTAIDHASH" source="OKTAIDHASH"/>
+    </input>
+    <joinAttribute name="JOIN$USER$OKTAIDHASH"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_OKTA" cardinality="CN_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="OKTAIDHASH"/>
+      <viewAttribute hidden="true" id="JOIN$LOADDATE$LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_OKTA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OKTAIDHASH" source="OKTAIDHASH"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_MEMBER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOADDATE$LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="JOIN$LOADDATE$LOADDATE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_MEMBER">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_MEMBER$$$$RAW_MEMBER$$"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_AWS">
+  <attributes>
+    <attribute id="EVENT_MEMBERIDGUID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="EVENT_DATE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="EVENT_DATE"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MET" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="MET"/>
+    </attribute>
+    <attribute id="EVENT_AWS_AVERAGE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="AVERAGE"/>
+    </attribute>
+    <attribute id="EVENT_AWS_CALORIES" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="CALORIES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_DISTANCE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="DISTANCE"/>
+    </attribute>
+    <attribute id="EVENT_AWS_STEPS" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="STEPS"/>
+    </attribute>
+    <attribute id="EVENT_AWS_EXCERSIZE_MINUTES" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="EXCERSIZE_MINUTES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MODERATELY_ACTIVE_MINUTES" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="MODERATELY_ACTIVE_MINUTES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_VIGOROUSLY_ACTIVE_MINTUES" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="VIGOROUSLY_ACTIVE_MINTUES"/>
+    </attribute>
+    <attribute id="EVENT_AWS_MINDFUL" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_AWS" columnName="MINDFUL"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="PRJ_AWS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="64" y="375"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="PRJ_OKTA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="323" y="448"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_AWS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="214" y="207"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_AWS" modelObjectNameSpace="J_AWS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="261"/>
+    </shape>
+    <shape modelObjectName="J_OKTA" modelObjectNameSpace="J_AWS" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_OKTA" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="430" y="302"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_OKTA" modelObjectNameSpace="J_OKTA" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="151"/>
+    </shape>
+    <shape modelObjectName="AGG_MEMBER" modelObjectNameSpace="J_OKTA" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="172"/>
+    </shape>
+  
+    <shape expanded="false" modelObjectName="AGG_MEMBER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="530" y="448"/>
+      <rectangleSize width="160"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

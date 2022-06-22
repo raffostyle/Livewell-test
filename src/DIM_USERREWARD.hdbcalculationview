@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DIM_USERREWARD" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="DIM_USERREWARD"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RAW_USERREWARD">
+    <resourceUri>RAW_USERREWARD</resourceUri>
+  </DataSource>
+  <DataSource id="AGG_USERREWARDS$$$$RAW_USERREWARD$$">
+    <resourceUri>RAW_USERREWARD</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRJ_USERREWARDS">
+    <viewAttributes>
+      <viewAttribute id="PARTITIONKEY"/>
+      <viewAttribute id="USERREWARDID"/>
+      <viewAttribute id="VOUCHERCODE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="REWARDID"/>
+      <viewAttribute id="DATETIMESTAMP"/>
+      <viewAttribute id="CURRENCYVALUE"/>
+      <viewAttribute id="COMPANY"/>
+      <viewAttribute id="TITLE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="DESCRIPTION"/>
+      <viewAttribute id="REWARDTYPE"/>
+      <viewAttribute id="REDEEMED"/>
+      <viewAttribute id="REDEEMURL"/>
+      <viewAttribute id="IMAGE"/>
+      <viewAttribute id="TERMSCONDITIONS"/>
+      <viewAttribute id="SHORTDESCRIPTION"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RAW_USERREWARD"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AGG_USERREWARDS">
+    <viewAttributes>
+      <viewAttribute id="LOADDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input emptyUnionBehavior="undefined" node="AGG_USERREWARDS$$$$RAW_USERREWARD$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="J_USERREWARD" cardinality="C1_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="PARTITIONKEY"/>
+      <viewAttribute id="USERREWARDID"/>
+      <viewAttribute id="VOUCHERCODE"/>
+      <viewAttribute id="MEMBERIDGUID"/>
+      <viewAttribute id="REWARDID"/>
+      <viewAttribute id="DATETIMESTAMP"/>
+      <viewAttribute id="CURRENCYVALUE"/>
+      <viewAttribute id="COMPANY"/>
+      <viewAttribute id="TITLE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="DESCRIPTION"/>
+      <viewAttribute id="REWARDTYPE"/>
+      <viewAttribute id="REDEEMED"/>
+      <viewAttribute id="REDEEMURL"/>
+      <viewAttribute id="IMAGE"/>
+      <viewAttribute id="TERMSCONDITIONS"/>
+      <viewAttribute id="SHORTDESCRIPTION"/>
+      <viewAttribute id="BATCHID"/>
+      <viewAttribute id="LOADDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRJ_USERREWARDS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="PARTITIONKEY" source="PARTITIONKEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERREWARDID" source="USERREWARDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VOUCHERCODE" source="VOUCHERCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBERIDGUID" source="MEMBERIDGUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REWARDID" source="REWARDID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATETIMESTAMP" source="DATETIMESTAMP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CURRENCYVALUE" source="CURRENCYVALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPANY" source="COMPANY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TITLE" source="TITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REWARDTYPE" source="REWARDTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REDEEMED" source="REDEEMED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REDEEMURL" source="REDEEMURL"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="IMAGE" source="IMAGE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERMSCONDITIONS" source="TERMSCONDITIONS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SHORTDESCRIPTION" source="SHORTDESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BATCHID" source="BATCHID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <input node="AGG_USERREWARDS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOADDATE" source="LOADDATE"/>
+    </input>
+    <joinAttribute name="LOADDATE"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="J_USERREWARD">
+  <attributes>
+    <attribute id="DIM_USERREWARD_PARTITIONKEY" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="PARTITIONKEY"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_USERREWARDID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="USERREWARDID"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_VOUCHERCODE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="VOUCHERCODE"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_MEMBERIDGUID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="MEMBERIDGUID"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_REWARDID" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="REWARDID"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_DATETIMESTAMP" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="DATETIMESTAMP"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_CURRENCYVALUE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="CURRENCYVALUE"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_COMPANY" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="COMPANY"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_TITLE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="TITLE"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_NAME" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="NAME"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="DESCRIPTION"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_REWARDTYPE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="REWARDTYPE"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_REDEEMED" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="REDEEMED"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_REDEEMURL" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="REDEEMURL"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_IMAGE" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="IMAGE"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_TERMSCONDITIONS" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="TERMSCONDITIONS"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_SHORTDESCRIPTION" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="SHORTDESCRIPTION"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_BATCHID" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="BATCHID"/>
+    </attribute>
+    <attribute id="DIM_USERREWARD_LOADDATE" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription=""/>
+      <keyMapping columnObjectName="J_USERREWARD" columnName="LOADDATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="253" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="PRJ_USERREWARDS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AGG_USERREWARDS" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="376"/>
+      <rectangleSize width="236"/>
+    </shape>
+    <shape expanded="true" modelObjectName="J_USERREWARD" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="253" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PRJ_USERREWARDS" modelObjectNameSpace="J_USERREWARD" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="806" y="30"/>
+      <rectangleSize width="192"/>
+    </shape>
+    <shape modelObjectName="AGG_USERREWARDS" modelObjectNameSpace="J_USERREWARD" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="188"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
